@@ -2,9 +2,11 @@ import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { StyledForm } from './From.style';
 
-const quizShema = Yup.object().shape({
+const quizSchema = Yup.object().shape({
   name: Yup.string().min(3, 'Too Short!').required('Required'),
-  number: Yup.number().min(10, 'Must be 10 or more').required('Required'),
+  number: Yup.string()
+    .matches(/^\d{3}-\d{2}-\d{2}$/, 'Invalid phone number format')
+    .required('Required'),
 });
 
 export const ContactForm = ({ onAdd }) => {
@@ -13,9 +15,10 @@ export const ContactForm = ({ onAdd }) => {
       <Formik
         initialValues={{
           name: '',
-          number: 0,
+          number: '',
+          filterName: '',
         }}
-        validationSchema={quizShema}
+        validationSchema={quizSchema}
         onSubmit={(values, actions) => {
           onAdd(values);
           actions.resetForm();
@@ -32,7 +35,6 @@ export const ContactForm = ({ onAdd }) => {
             <Field type="tel" name="number" />
             <ErrorMessage name="number" component="span" />
           </label>
-
           <button type="submit">Submit</button>
         </StyledForm>
       </Formik>
