@@ -6,6 +6,9 @@ import { ContactForm } from './PhoneForm';
 import { Section } from './PhoneTitel/PhoneTitel';
 import { ContactList } from './FormList/From.List';
 import { SearchBar } from './SearchBar';
+import { TypeAnimation } from 'react-type-animation';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const initialFilters = {
   name: '',
@@ -16,6 +19,7 @@ export class App extends Component {
   state = {
     contacts: [],
     filter: initialFilters,
+    isFormSubmitted: false,
   };
 
   addContact = newContact => {
@@ -24,7 +28,7 @@ export class App extends Component {
     );
 
     if (isNameExist) {
-      alert('Contact with this name already exists!');
+      toast.error('Contact with this name already exists!');
       return;
     }
 
@@ -35,14 +39,14 @@ export class App extends Component {
 
     this.setState(prevState => ({
       contacts: [...prevState.contacts, quiz],
+      isFormSubmitted: true,
     }));
   };
+
   deleteItem = contactId => {
-    this.setState(prevState => {
-      return {
-        contacts: prevState.contacts.filter(item => item.id !== contactId),
-      };
-    });
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(item => item.id !== contactId),
+    }));
   };
 
   handleFilterChange = event => {
@@ -56,7 +60,7 @@ export class App extends Component {
   };
 
   render() {
-    const { contacts, filter } = this.state;
+    const { contacts, filter, isFormSubmitted } = this.state;
     const visibleContacts = contacts.filter(item => {
       const hasName = item.name
         .toLowerCase()
@@ -66,14 +70,37 @@ export class App extends Component {
 
     return (
       <Layout>
-        <Section title="adadad">
+        <Section title="Phonebook">
+          <TypeAnimation
+            sequence={[
+              'To create an entry, enter the name',
+              1000,
+              'To create an entry, enter the number',
+              1000,
+              'Press the button',
+              1000,
+              'I believe in you',
+              1000,
+            ]}
+            speed={50}
+            style={{ fontSize: '2em' }}
+            repeat={Infinity}
+          />
           <ContactForm onAdd={this.addContact} />
-          <SearchBar filter={filter} onSearch={this.handleFilterChange} />
-        </Section>
-        <Section title="Contacts">
-          <ContactList contacts={visibleContacts} onDelete={this.deleteItem} />
+          {isFormSubmitted && (
+            <>
+              <SearchBar filter={filter} onSearch={this.handleFilterChange} />
+              <Section title="Contacts">
+                <ContactList
+                  contacts={visibleContacts}
+                  onDelete={this.deleteItem}
+                />
+              </Section>
+            </>
+          )}
         </Section>
         <GlobalStyle />
+        <ToastContainer />
       </Layout>
     );
   }

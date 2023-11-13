@@ -1,6 +1,6 @@
-import { Formik, Field, ErrorMessage } from 'formik';
+import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { StyledForm } from './From.style';
+import { StyledForm, FromStyle, FormGroup, FormButton } from './From.style';
 
 const quizSchema = Yup.object().shape({
   name: Yup.string().min(3, 'Too Short!').required('Required'),
@@ -25,17 +25,22 @@ export const ContactForm = ({ onAdd }) => {
         }}
       >
         <StyledForm>
-          <label>
-            Name
-            <Field name="name" />
+          <FormGroup>
+            <label htmlFor="name"></label>
+            <FromStyle name="name" id="name" placeholder="name" />
             <ErrorMessage name="name" component="span" />
-          </label>
-          <label>
-            Number
-            <Field type="tel" name="number" />
+          </FormGroup>
+          <FormGroup>
+            <label htmlFor="number"></label>
+            <FromStyle
+              type="tel"
+              name="number"
+              id="number"
+              placeholder="number"
+            />
             <ErrorMessage name="number" component="span" />
-          </label>
-          <button type="submit">Submit</button>
+          </FormGroup>
+          <FormButton type="submit">Add</FormButton>
         </StyledForm>
       </Formik>
     </div>
