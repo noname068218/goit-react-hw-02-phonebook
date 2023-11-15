@@ -1,25 +1,21 @@
 import React, { Component } from 'react';
 import { GlobalStyle } from '../Global';
 import { nanoid } from 'nanoid';
-import { Layout } from './Loyout';
-import { ContactForm } from './PhoneForm';
-import { Section } from './PhoneTitel/PhoneTitel';
-import { ContactList } from './FormList/From.List';
+import { Layout } from './Layout';
+import { ContactForm } from './Form/Form';
+import { Section } from './PhoneTitle/PhoneTitle';
+import { ContactList } from './FormList/ContactList';
 import { SearchBar } from './SearchBar';
-import { TypeAnimation } from 'react-type-animation';
+import { AnimationText } from './OtherAnimation.js';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-const initialFilters = {
-  name: '',
-  number: '',
-};
 
 export class App extends Component {
   state = {
     contacts: [],
-    filter: initialFilters,
-    isFormSubmitted: false,
+    filter: '',
+    name: '',
+    number: '',
   };
 
   addContact = newContact => {
@@ -32,14 +28,13 @@ export class App extends Component {
       return;
     }
 
-    const quiz = {
+    const contact = {
       ...newContact,
       id: nanoid(),
     };
 
     this.setState(prevState => ({
-      contacts: [...prevState.contacts, quiz],
-      isFormSubmitted: true,
+      contacts: [...prevState.contacts, contact],
     }));
   };
 
@@ -51,43 +46,26 @@ export class App extends Component {
 
   handleFilterChange = event => {
     const { value } = event.target;
-    this.setState(prevState => ({
-      filter: {
-        ...prevState.filter,
-        name: value,
-      },
-    }));
+    this.setState({
+      filter: value,
+    });
+  };
+  visibleContacts = () => {
+    const { contacts, filter } = this.state;
+    return contacts.filter(item =>
+      item.name.toLowerCase().includes(filter.toLowerCase())
+    );
   };
 
   render() {
-    const { contacts, filter, isFormSubmitted } = this.state;
-    const visibleContacts = contacts.filter(item => {
-      const hasName = item.name
-        .toLowerCase()
-        .includes(filter.name.toLowerCase());
-      return hasName;
-    });
-
+    const { contacts, filter } = this.state;
+    const visibleContacts = this.visibleContacts();
     return (
       <Layout>
         <Section title="Phonebook">
-          <TypeAnimation
-            sequence={[
-              'To create an entry, enter the name',
-              1000,
-              'To create an entry, enter the number',
-              1000,
-              'Press the button',
-              1000,
-              'I believe in you',
-              1000,
-            ]}
-            speed={50}
-            style={{ fontSize: '2em' }}
-            repeat={Infinity}
-          />
+          <AnimationText />
           <ContactForm onAdd={this.addContact} />
-          {isFormSubmitted && (
+          {contacts.length > 0 && (
             <>
               <SearchBar filter={filter} onSearch={this.handleFilterChange} />
               <Section title="Contacts">

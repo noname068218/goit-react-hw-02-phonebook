@@ -1,7 +1,7 @@
-export const SearchBar = ({ filter: { name, number }, onSearch }) => {
+export const SearchBar = ({ filter, onSearch }) => {
   return (
     <div>
-      <input type="text" value={name} onChange={onSearch} />
+      <input type="text" value={filter} onChange={onSearch} />
     </div>
   );
 };
