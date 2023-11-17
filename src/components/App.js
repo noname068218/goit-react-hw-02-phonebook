@@ -9,7 +9,9 @@ import { SearchBar } from './SearchBar';
 import { AnimationText } from './OtherAnimation.js';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
+const keyStorage = 'phone-contacts';
 export class App extends Component {
   state = {
     contacts: [],
@@ -17,6 +19,24 @@ export class App extends Component {
     name: '',
     number: '',
   };
+
+  componentDidMount() {
+    const saveContacts = window.localStorage.getItem(keyStorage);
+    if (saveContacts !== null) {
+      this.setState({
+        contacts: JSON.parse(saveContacts),
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.contact !== this.state.contacts) {
+      window.localStorage.setItem(
+        keyStorage,
+        JSON.stringify(this.state.contacts)
+      );
+    }
+  }
 
   addContact = newContact => {
     const isNameExist = this.state.contacts.some(

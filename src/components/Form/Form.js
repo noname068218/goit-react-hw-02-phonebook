@@ -16,7 +16,6 @@ export const ContactForm = ({ onAdd }) => {
         initialValues={{
           name: '',
           number: '',
-          filterName: '',
         }}
         validationSchema={quizSchema}
         onSubmit={(values, actions) => {
