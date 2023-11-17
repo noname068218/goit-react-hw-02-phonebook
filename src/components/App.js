@@ -10,6 +10,7 @@ import { AnimationText } from './OtherAnimation.js';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { ThemeProviderWrapper } from './Theme';
 
 const keyStorage = 'phone-contacts';
 export class App extends Component {
@@ -82,6 +83,7 @@ export class App extends Component {
     const visibleContacts = this.visibleContacts();
     return (
       <Layout>
+        <ThemeProviderWrapper />
         <Section title="Phonebook">
           <AnimationText />
           <ContactForm onAdd={this.addContact} />
