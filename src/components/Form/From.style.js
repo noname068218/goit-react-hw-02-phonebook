@@ -11,7 +11,7 @@ export const FromStyle = styled(Field)`
   width: 100%;
   padding: 10px;
   font-size: 16px;
-  color: #000;
+  color: #03f40f;
   margin-bottom: 15px;
   border: none;
   border-bottom: 1px solid #000;

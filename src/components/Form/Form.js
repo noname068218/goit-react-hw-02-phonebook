@@ -5,7 +5,7 @@ import { StyledForm, FromStyle, FormGroup, FormButton } from './From.style';
 const quizSchema = Yup.object().shape({
   name: Yup.string().min(3, 'Too Short!').required('Required'),
   number: Yup.string()
-    .matches(/^\d{3}-\d{2}-\d{2}$/, 'Invalid phone number format')
+    .matches(/^\d{3}-\d{2}-\d{2}$/, 'Exemple 333-33-33')
     .required('Required'),
 });
 
